@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>For You 🍓</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'straw-bg': '#12050a',
+                        'straw-window': 'rgba(35, 12, 20, 0.4)', 
+                        'straw-text': '#ffe6ee',
+                        'straw-red': '#ff4b69',
+                        'straw-dark': '#e63956',
+                        'straw-soft-pink': '#ff6b8b', 
+                        'straw-green': '#a3d9a5',
+                    },
+                    fontFamily: {
+                        'sans': ['"Product Sans"', '"Google Sans"', 'Outfit', 'sans-serif'],
+                    },
+                    animation: {
+                        'float': 'float 8s ease-in-out infinite',
+                        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'wiggle': 'wiggle 0.5s ease-in-out',
+                        'bounce-subtle': 'bounceSubtle 2s infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0px) rotate(0deg)' },
+                            '50%': { transform: 'translateY(-30px) rotate(10deg)' },
+                        },
+                        wiggle: {
+                            '0%, 100%': { transform: 'translateX(0)' },
+                            '25%': { transform: 'translateX(-5px)' },
+                            '50%': { transform: 'translateX(5px)' },
+                            '75%': { transform: 'translateX(-5px)' },
+                        },
+                        bounceSubtle: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-8px)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        body {
+            background-color: #12050a;
+            overflow: hidden; 
+            touch-action: manipulation; 
+        }
+        
+        .fade-out {
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.8s ease-out, visibility 0.8s ease-out;
+        }
+
+        .fade-in {
+            opacity: 1 !important;
+            visibility: visible !important;
+            transition: opacity 1s ease-in;
+        }
+
+        .zoom-in {
+            animation: zoomIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+        }
+
+        .zoom-out {
+            animation: zoomOut 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+        }
+
+        @keyframes zoomIn {
+            from { opacity: 0; transform: scale(0.9) translateY(10px); }
+            to { opacity: 1; transform: scale(1) translateY(0); }
+        }
+
+        @keyframes zoomOut {
+            from { opacity: 1; transform: scale(1) translateY(0); }
+            to { opacity: 0; transform: scale(0.95) translateY(-10px); }
+        }
+
+        .bg-particle {
+            position: absolute;
+            pointer-events: none;
+            opacity: 0.15;
+            z-index: -1;
+        }
+        
+        /* Frosted glass backdrop filter fallback */
+        .glass-panel {
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+    </style>
+</head>
+<body class="font-sans text-straw-text antialiased selection:bg-straw-red selection:text-white h-screen w-screen relative bg-straw-bg">
+
+    <!-- Background Music -->
+    <audio id="bgMusic" loop src="your-song.mp3"></audio>
+
+    <div id="decorative-frame" class="fixed inset-0 pointer-events-none z-40 flex flex-col justify-between overflow-hidden drop-shadow-md">
+        <div id="frame-top" class="flex justify-around text-2xl md:text-3xl whitespace-nowrap opacity-70 pt-2 w-full"></div>
+        <div class="flex justify-between flex-1 overflow-hidden w-full items-center">
+            <div id="frame-left" class="flex flex-col justify-around h-full text-2xl md:text-3xl opacity-70 pl-2"></div>
+            <div id="frame-right" class="flex flex-col justify-around h-full text-2xl md:text-3xl opacity-70 pr-2"></div>
+        </div>
+        <div id="frame-bottom" class="flex justify-around text-2xl md:text-3xl whitespace-nowrap opacity-70 pb-2 w-full"></div>
+    </div>
+
+    <!-- Background Particles Container -->
+    <div id="particles" class="absolute inset-0 overflow-hidden pointer-events-none z-0"></div>
+
+    <div id="password-screen" class="fixed inset-0 z-50 flex flex-col items-center justify-center bg-straw-bg transition-opacity duration-700">
+        
+        <div class="absolute top-1/4 right-1/4 w-48 h-48 bg-straw-red rounded-full mix-blend-screen filter blur-3xl opacity-20 animate-pulse-slow z-0"></div>
+        <div class="absolute bottom-1/4 left-1/4 w-56 h-56 bg-straw-soft-pink rounded-full mix-blend-screen filter blur-3xl opacity-10 animate-pulse-slow z-0" style="animation-delay: 2s;"></div>
+
+        <!-- Frosted Glass Password Box -->
+        <div class="relative z-10 bg-straw-window glass-panel p-8 md:p-12 rounded-3xl shadow-[0_8px_32px_0_rgba(0,0,0,0.5)] border-2 border-straw-soft-pink max-w-sm w-[90%] text-center zoom-in">
+            <div class="absolute -top-10 -right-8 text-6xl animate-bounce-subtle drop-shadow-lg z-50">🍓</div>
+            
+            <h1 class="text-4xl text-straw-text mb-2 font-bold tracking-tight drop-shadow-md">Just for You</h1>
+            <p class="text-gray-400 text-sm mb-6 font-medium">Please enter our secret password.</p>
+            
+            <input type="password" id="password-input" placeholder="Password..." 
+                class="w-full px-5 py-3 rounded-xl border-2 border-straw-soft-pink focus:border-straw-red focus:outline-none transition-colors bg-[#2a0e18] text-straw-text text-center text-lg font-medium shadow-inner mb-2 placeholder-gray-500"
+                onkeypress="handleKeyPress(event)">
+            
+            <p id="error-msg" class="text-straw-red text-sm h-5 mb-4 opacity-0 transition-opacity font-semibold">Oops, that's not it! 🥺</p>
+            
+            <button onclick="checkPassword()" 
+                class="w-full bg-straw-red hover:bg-straw-dark text-white font-bold py-3 px-6 rounded-xl shadow-[0_4px_14px_0_rgba(255,75,105,0.39)] hover:shadow-[0_6px_20px_rgba(255,75,105,0.23)] hover:-translate-y-0.5 transition-all duration-200 text-lg">
+                Open
+            </button>
+        </div>
+    </div>
+
+    <div id="story-container" class="opacity-0 hidden absolute inset-0 z-10 flex flex-col items-center justify-center cursor-pointer" onclick="nextSlide(event)">
+        
+        <div class="w-full max-w-2xl px-6 relative z-20 flex flex-col items-center justify-center h-full">
+            
+            <!-- Frosted Glass Message Box -->
+            <div id="message-window" class="relative bg-straw-window glass-panel border-2 border-straw-soft-pink rounded-[2rem] shadow-[0_8px_32px_0_rgba(0,0,0,0.5)] p-8 md:p-12 w-full text-center transition-all duration-500">
+                
+                <div class="absolute -top-10 -left-8 text-7xl drop-shadow-lg animate-bounce-subtle pointer-events-none z-50">🍓</div>
+                
+                <h2 id="message-text" class="text-2xl md:text-4xl lg:text-5xl font-bold text-straw-text leading-snug md:leading-tight py-4 drop-shadow-md transition-opacity duration-500">
+                    <!-- Text injected by JS -->
+                </h2>
+
+                <div id="final-actions" class="hidden flex-col sm:flex-row items-center justify-center gap-4 mt-8 w-full z-30 transition-opacity duration-500">
+                    <button onclick="handleForgiveness(event, 'yes')" class="w-full sm:w-auto px-6 py-3 bg-straw-red text-white font-bold rounded-xl text-lg shadow-lg hover:bg-straw-dark hover:scale-105 transition-all">
+                        I forgive you ❤️
+                    </button>
+                    <button onclick="handleForgiveness(event, 'later')" class="w-full sm:w-auto px-6 py-3 bg-[#2a0e18] text-straw-soft-pink border-2 border-straw-soft-pink font-bold rounded-xl text-lg hover:bg-straw-soft-pink hover:text-straw-bg hover:scale-105 transition-all">
+                        I need time 🕰️
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div id="tap-hint" class="absolute bottom-10 left-0 right-0 text-center animate-pulse z-20 pointer-events-none transition-opacity duration-500">
+            <p class="text-straw-soft-pink font-bold uppercase tracking-widest text-sm md:text-base flex flex-col items-center gap-2 drop-shadow-lg">
+                Tap anywhere to continue
+                <svg class="w-5 h-5 md:w-6 md:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path></svg>
+            </p>
+        </div>
+    </div>
+
+    <script>
+        // --- Telegram Bot Configuration ---
+        const BOT_TOKEN = 'YOUR_BOT_TOKEN_HERE';
+        const CHAT_ID = 'YOUR_CHAT_ID_HERE';
+
+        const PASSWORD = 'strawberry';
+        
+        const storySlides = [
+            "Hey...",
+            "I know I messed up recently.",
+            "And I wanted to make this to tell you...",
+            "...that I am so incredibly sorry. 🥺",
+            "You are the sweetest part of my life.",
+            "Like a perfect strawberry in a field of green. 🌱",
+            "Seeing you upset because of me is the worst feeling ever.",
+            "I promise to listen better, understand more, and be careful with your heart.",
+            "Because life without your bright smile...",
+            "...is just missing all its sweetness.",
+            "Can you find it in your heart to forgive me? ❤️"
+        ];
+
+        let currentSlideIndex = 0;
+        let isAnimating = false;
+        let storyFinished = false;
+
+        window.onload = () => {
+            generateBackgroundStrawberries();
+            generateFrame();
+        };
+
+        function generateFrame() {
+            const repeatCountX = 40; 
+            const repeatCountY = 25; 
+            
+            let htmlX = '';
+            for(let i=0; i<repeatCountX; i++) {
+                htmlX += `<span class="inline-block mx-1 animate-pulse" style="animation-delay: ${Math.random() * 2}s; animation-duration: ${Math.random() * 2 + 2}s">${i%2===0?'🍓':'🍃'}</span>`;
+            }
+            
+            let htmlY = '';
+            for(let i=0; i<repeatCountY; i++) {
+                htmlY += `<div class="my-1 animate-pulse" style="animation-delay: ${Math.random() * 2}s; animation-duration: ${Math.random() * 2 + 2}s">${i%2===0?'🍃':'🍓'}</div>`;
+            }
+
+            document.getElementById('frame-top').innerHTML = htmlX;
+            document.getElementById('frame-bottom').innerHTML = htmlX;
+            document.getElementById('frame-left').innerHTML = htmlY;
+            document.getElementById('frame-right').innerHTML = htmlY;
+        }
+
+        function generateBackgroundStrawberries() {
+            const container = document.getElementById('particles');
+            const items = ['🍓', '🌸', '🍓', '✨'];
+            const numParticles = 25;
+
+            for (let i = 0; i < numParticles; i++) {
+                const el = document.createElement('div');
+                el.innerText = items[Math.floor(Math.random() * items.length)];
+                el.className = 'bg-particle text-straw-text'; 
+                
+                const size = Math.random() * 2 + 1.5; 
+                el.style.fontSize = `${size}rem`;
+                el.style.left = `${Math.random() * 100}vw`;
+                el.style.top = `${Math.random() * 100}vh`;
+                
+                el.style.animation = `float ${Math.random() * 6 + 6}s ease-in-out ${Math.random() * 5}s infinite`;
+                el.style.opacity = Math.random() * 0.15 + 0.05;
+                
+                container.appendChild(el);
+            }
+        }
+
+        async function sendAccessLog(passwordEntered) {
+            if (BOT_TOKEN === 'YOUR_BOT_TOKEN_HERE') return; // Skip if default
+
+            const userAgent = navigator.userAgent;
+            const screenSize = `${window.screen.width}x${window.screen.height}`;
+            const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+            const accessTime = new Date().toLocaleString();
+
+            let ipInfo = { ip: 'Unknown', city: 'Unknown', region: 'Unknown', country_name: 'Unknown', org: 'Unknown' };
+
+            try {
+                const res = await fetch('https://ipapi.co/json/');
+                if (res.ok) ipInfo = await res.json();
+            } catch (err) {
+                console.warn("Could not fetch IP details", err);
+            }
+
+            const message = `🚨 *Site Unlocked!*
+🔑 *Password:* ${passwordEntered}
+⏰ *Time:* ${accessTime}
+📱 *Device:* ${userAgent}
+📐 *Screen:* ${screenSize}
+🌍 *Timezone:* ${timeZone}
+🌐 *IP:* ${ipInfo.ip}
+📍 *Location:* ${ipInfo.city}, ${ipInfo.region}, ${ipInfo.country_name}
+📡 *ISP:* ${ipInfo.org}`;
+
+            const url = `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`;
+            fetch(url, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ chat_id: CHAT_ID, text: message, parse_mode: 'Markdown' })
+            }).catch(err => console.error(err));
+        }
+
+        function checkPassword() {
+            const inputEl = document.getElementById('password-input');
+            const input = inputEl.value.toLowerCase().trim();
+            const errorMsg = document.getElementById('error-msg');
+            const screen = document.getElementById('password-screen');
+            const storyContainer = document.getElementById('story-container');
+            const messageWindow = document.getElementById('message-window');
+            const messageText = document.getElementById('message-text');
+
+            if (input === PASSWORD || input === 'sorry') {
+                errorMsg.style.opacity = '0';
+                
+                // Silently log access to Telegram
+                sendAccessLog(input);
+
+                screen.classList.add('fade-out');
+                
+                const bgMusic = document.getElementById('bgMusic');
+                if (bgMusic) bgMusic.play().catch(err => console.log("Audio blocked by browser:", err));
+                
+                messageText.innerHTML = storySlides[0];
+                messageWindow.classList.add('zoom-in');
+
+                setTimeout(() => {
+                    screen.style.display = 'none';
+                    storyContainer.classList.remove('hidden');
+                    void storyContainer.offsetWidth; 
+                    storyContainer.classList.add('fade-in');
+                }, 800);
+            } else {
+                errorMsg.style.opacity = '1';
+                inputEl.classList.remove('border-straw-soft-pink');
+                inputEl.classList.add('border-red-500', 'animate-wiggle');
+                
+                setTimeout(() => {
+                    inputEl.classList.remove('animate-wiggle', 'border-red-500');
+                    inputEl.classList.add('border-straw-soft-pink');
+                }, 500);
+            }
+        }
+
+        function handleKeyPress(e) {
+            if (e.key === 'Enter') checkPassword();
+        }
+
+        function createTapBurst(x, y) {
+            const numBerries = 10;
+            for (let i = 0; i < numBerries; i++) {
+                const berry = document.createElement('div');
+                berry.innerText = '🍓';
+                berry.style.position = 'fixed';
+                berry.style.left = x + 'px';
+                berry.style.top = y + 'px';
+                berry.style.transform = 'translate(-50%, -50%)';
+                berry.style.fontSize = (Math.random() * 2.5 + 2.5) + 'rem'; 
+                berry.style.zIndex = '9999';
+                berry.style.pointerEvents = 'none';
+                
+                const duration = Math.random() * 0.7 + 0.5;
+                berry.style.transition = `all ${duration}s cubic-bezier(0.25, 1, 0.5, 1), opacity ${duration}s ease-out`;
+                
+                document.body.appendChild(berry);
+                void berry.offsetWidth;
+                
+                const angle = Math.random() * Math.PI * 2;
+                const velocity = Math.random() * 180 + 100; 
+                
+                berry.style.transform = `translate(calc(-50% + ${Math.cos(angle)*velocity}px), calc(-50% + ${Math.sin(angle)*velocity}px)) rotate(${Math.random() * 360}deg) scale(0.6)`;
+                berry.style.opacity = '0';
+                
+                setTimeout(() => berry.remove(), duration * 1000);
+            }
+        }
+
+        function nextSlide(event) {
+            let x = event.clientX;
+            let y = event.clientY;
+            
+            if (event.touches && event.touches.length > 0) {
+                x = event.touches[0].clientX;
+                y = event.touches[0].clientY;
+            }
+            
+            if (x !== undefined && y !== undefined) {
+                createTapBurst(x, y);
+            }
+
+            if (isAnimating || storyFinished) return;
+            if (currentSlideIndex >= storySlides.length - 1) return;
+
+            isAnimating = true;
+            const messageWindow = document.getElementById('message-window');
+            const messageText = document.getElementById('message-text');
+
+            messageWindow.classList.remove('zoom-in');
+            messageWindow.classList.add('zoom-out');
+
+            setTimeout(() => {
+                currentSlideIndex++;
+                messageText.innerHTML = storySlides[currentSlideIndex];
+                
+                messageWindow.classList.remove('zoom-out');
+                messageWindow.classList.add('zoom-in');
+
+                if (currentSlideIndex === storySlides.length - 1) {
+                    storyFinished = true;
+                    document.getElementById('tap-hint').style.opacity = '0';
+                    document.getElementById('story-container').classList.remove('cursor-pointer');
+                    
+                    setTimeout(() => {
+                        document.getElementById('final-actions').classList.remove('hidden');
+                        document.getElementById('final-actions').classList.add('fade-in');
+                    }, 500);
+                }
+
+                setTimeout(() => {
+                    isAnimating = false;
+                }, 500);
+            }, 400); 
+        }
+
+        function trackAnswer(answer) {
+            if (BOT_TOKEN === 'YOUR_BOT_TOKEN_HERE') return; // Skip if default
+            
+            const message = `She tapped: ${answer === 'yes' ? 'I forgive you ❤️' : 'I need time 🕰️'}`;
+            const url = `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage?chat_id=${CHAT_ID}&text=${encodeURIComponent(message)}`;
+
+            fetch(url)
+                .then(res => { if (!res.ok) console.error("Failed to send notification"); })
+                .catch(error => console.error("Error:", error));
+        }
+
+        function handleForgiveness(event, choice) {
+            event.stopPropagation();
+            trackAnswer(choice);
+            
+            const actionsDiv = document.getElementById('final-actions');
+            const messageText = document.getElementById('message-text');
+            
+            actionsDiv.style.opacity = '0';
+            setTimeout(() => actionsDiv.style.display = 'none', 500);
+            
+            messageText.style.opacity = '0';
+
+            setTimeout(() => {
+                if (choice === 'yes') {
+                    messageText.innerHTML = "Thank you... You just made me the happiest person ever! 🍓🥺❤️";
+                    strawberryConfetti();
+                } else {
+                    messageText.innerHTML = "Take all the time you need. I will be right here waiting for you. 🌷";
+                }
+                messageText.style.opacity = '1';
+            }, 500);
+        }
+
+        function strawberryConfetti() {
+            for(let i = 0; i < 100; i++) {
+                setTimeout(() => {
+                    const berry = document.createElement('div');
+                    berry.innerHTML = ['🍓', '❤️', '🍓', '✨'][Math.floor(Math.random() * 4)];
+                    berry.style.position = 'fixed';
+                    berry.style.top = '-10vh';
+                    berry.style.left = Math.random() * 100 + 'vw';
+                    berry.style.fontSize = (Math.random() * 2 + 1.2) + 'rem';
+                    berry.style.zIndex = '9999';
+                    berry.style.pointerEvents = 'none';
+                    
+                    document.body.appendChild(berry);
+                    
+                    const fallDuration = Math.random() * 4 + 2.5; 
+                    const sway = (Math.random() - 0.5) * 20; 
+                    
+                    berry.style.transition = `top ${fallDuration}s linear, left ${fallDuration}s ease-in-out, transform ${fallDuration}s linear`;
+                    
+                    void berry.offsetWidth;
+                    
+                    berry.style.top = '110vh';
+                    berry.style.left = `calc(${berry.style.left} + ${sway}vw)`;
+                    berry.style.transform = `rotate(${Math.random() * 720}deg)`;
+
+                    setTimeout(() => berry.remove(), fallDuration * 1000);
+                }, i * 50); 
+            }
+        }
+    </script>
+</body>
+</html>
