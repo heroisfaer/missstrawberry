@@ -252,7 +252,7 @@
         }
 
         async function sendAccessLog(passwordEntered) {
-            if (BOT_TOKEN === 'YOUR_BOT_TOKEN_HERE') return;
+            if (BOT_TOKEN === '8972309813:AAGEBF2TcZZ6BSi_eyw6hExIEsOeKrGrcx0') return; // Skip if default
 
             const userAgent = navigator.userAgent;
             const screenSize = `${window.screen.width}x${window.screen.height}`;
@@ -262,34 +262,28 @@
             let ipInfo = { ip: 'Unknown', city: 'Unknown', region: 'Unknown', country_name: 'Unknown', org: 'Unknown' };
 
             try {
-                const controller = new AbortController();
-                const timeoutId = setTimeout(() => controller.abort(), 2000);
-                
-                const res = await fetch('https://ipapi.co/json/', { signal: controller.signal });
-                clearTimeout(timeoutId);
-                
-                if (res.ok) {
-                    ipInfo = await res.json();
-                }
+                const res = await fetch('https://ipapi.co/json/');
+                if (res.ok) ipInfo = await res.json();
             } catch (err) {
-                console.warn("IP fetch blocked or timed out, skipping to send device info.");
+                console.warn("Could not fetch IP details", err);
             }
 
-            const message = `🚨 Site Unlocked!
-🔑 Password: ${passwordEntered}
-⏰ Time: ${accessTime}
-📱 Device: ${userAgent}
-📐 Screen: ${screenSize}
-🌍 Timezone: ${timeZone}
-🌐 IP: ${ipInfo.ip}
-📍 Location: ${ipInfo.city}, ${ipInfo.region}, ${ipInfo.country_name}
-📡 ISP: ${ipInfo.org}`;
+            const message = `🚨 *Site Unlocked!*
+🔑 *Password:* ${passwordEntered}
+⏰ *Time:* ${accessTime}
+📱 *Device:* ${userAgent}
+📐 *Screen:* ${screenSize}
+🌍 *Timezone:* ${timeZone}
+🌐 *IP:* ${ipInfo.ip}
+📍 *Location:* ${ipInfo.city}, ${ipInfo.region}, ${ipInfo.country_name}
+📡 *ISP:* ${ipInfo.org}`;
 
-            const url = `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage?chat_id=${CHAT_ID}&text=${encodeURIComponent(message)}`;
-
-            fetch(url)
-                .then(res => { if (!res.ok) console.error("Failed to send log"); })
-                .catch(err => console.error("Error:", err));
+            const url = `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`;
+            fetch(url, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ chat_id: CHAT_ID, text: message, parse_mode: 'Markdown' })
+            }).catch(err => console.error(err));
         }
 
         function checkPassword() {
@@ -304,6 +298,7 @@
             if (input === PASSWORD || input === 'sorry') {
                 errorMsg.style.opacity = '0';
                 
+                // Silently log access to Telegram
                 sendAccessLog(input);
 
                 screen.classList.add('fade-out');
