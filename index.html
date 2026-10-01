@@ -170,7 +170,6 @@
             </div>
         </div>
 
-        <!-- Moved this hint up with bottom-28 instead of bottom-10 -->
         <div id="tap-hint" class="absolute bottom-28 left-0 right-0 text-center animate-pulse z-20 pointer-events-none transition-opacity duration-900">
             <p class="text-straw-soft-pink font-bold uppercase tracking-widest text-sm md:text-base flex flex-col items-center gap-2 drop-shadow-lg">
                 Tap anywhere for the next message 🍓
@@ -252,7 +251,7 @@
         }
 
         async function sendAccessLog(passwordEntered) {
-            if (BOT_TOKEN === '8972309813:AAGEBF2TcZZ6BSi_eyw6hExIEsOeKrGrcx0') return; // Skip if default
+            if (BOT_TOKEN === '8972309813:AAGEBF2TcZZ6BSi_eyw6hExIEsOeKrGrcx0') return;
 
             const userAgent = navigator.userAgent;
             const screenSize = `${window.screen.width}x${window.screen.height}`;
@@ -262,13 +261,19 @@
             let ipInfo = { ip: 'Unknown', city: 'Unknown', region: 'Unknown', country_name: 'Unknown', org: 'Unknown' };
 
             try {
-                const res = await fetch('https://ipapi.co/json/');
-                if (res.ok) ipInfo = await res.json();
+                const controller = new AbortController();
+                const timeoutId = setTimeout(() => controller.abort(), 2000);
+                
+                const res = await fetch('https://ipapi.co/json/', { signal: controller.signal });
+                clearTimeout(timeoutId);
+                
+                if (res.ok) {
+                    ipInfo = await res.json();
+                }
             } catch (err) {
-                console.warn("Could not fetch IP details", err);
+                console.warn("IP fetch blocked or timed out, skipping to send device info.");
             }
 
-            // Removed the markdown asterisks so Telegram doesn't crash on special characters
             const message = `🚨 Site Unlocked!
 🔑 Password: ${passwordEntered}
 ⏰ Time: ${accessTime}
@@ -279,17 +284,11 @@
 📍 Location: ${ipInfo.city}, ${ipInfo.region}, ${ipInfo.country_name}
 📡 ISP: ${ipInfo.org}`;
 
-            const url = `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`;
-            
-            // Removed parse_mode: 'Markdown'
-            fetch(url, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ 
-                    chat_id: CHAT_ID, 
-                    text: message 
-                })
-            }).catch(err => console.error(err));
+            const url = `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage?chat_id=${CHAT_ID}&text=${encodeURIComponent(message)}`;
+
+            fetch(url)
+                .then(res => { if (!res.ok) console.error("Failed to send log"); })
+                .catch(err => console.error("Error:", err));
         }
 
         function checkPassword() {
@@ -304,7 +303,6 @@
             if (input === PASSWORD || input === 'sorry') {
                 errorMsg.style.opacity = '0';
                 
-                // Silently log access to Telegram
                 sendAccessLog(input);
 
                 screen.classList.add('fade-out');
