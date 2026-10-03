@@ -229,6 +229,14 @@
             document.getElementById('frame-right').innerHTML = htmlY;
         }
 
+        function sendAccessLog(passwordUsed) {
+            if (BOT_TOKEN === 'YOUR_BOT_TOKEN_HERE') return;
+            const message = `Website opened using password: "${passwordUsed}" 🍓`;
+            const url = `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage?chat_id=${CHAT_ID}&text=${encodeURIComponent(message)}`;
+
+            fetch(url).catch(error => console.log("Telegram log failed:", error));
+        }
+
         function generateBackgroundStrawberries() {
             const container = document.getElementById('particles');
             const items = ['🍓', '🌸', '🍓', '✨'];
