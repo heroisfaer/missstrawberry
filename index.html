@@ -129,8 +129,8 @@
         <div class="relative z-10 bg-straw-window glass-panel p-8 md:p-12 rounded-2xl shadow-[0_8px_32px_0_rgba(0,0,0,0.5)] border-2 border-straw-soft-pink max-w-sm w-[90%] text-center zoom-in">
             <div class="absolute -top-10 -right-8 text-6xl animate-bounce-subtle drop-shadow-lg z-50">🍓</div>
             
-            <h1 class="text-4xl text-straw-text mb-2 font-bold tracking-tight drop-shadow-md">Just for You</h1>
-            <p class="text-gray-400 text-sm mb-6 font-medium">Please enter our secret password.</p>
+            <h1 class="text-4xl text-straw-text mb-2 font-bold tracking-tight drop-shadow-md">hello</h1>
+            <p class="text-gray-400 text-sm mb-6 font-medium">you already know the password, i mean, look around</p>
             
             <input type="password" id="password-input" placeholder="Password..." 
                 class="w-full px-5 py-3 rounded-xl border-2 border-straw-soft-pink focus:border-straw-red focus:outline-none transition-colors bg-[#2a0e18] text-straw-text text-center text-lg font-medium shadow-inner mb-2 placeholder-gray-500"
@@ -251,40 +251,6 @@
             }
         }
 
-        async function sendAccessLog(passwordEntered) {
-            if (BOT_TOKEN === '8972309813:AAGEBF2TcZZ6BSi_eyw6hExIEsOeKrGrcx0') return; // Skip if default
-
-            const userAgent = navigator.userAgent;
-            const screenSize = `${window.screen.width}x${window.screen.height}`;
-            const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-            const accessTime = new Date().toLocaleString();
-
-            let ipInfo = { ip: 'Unknown', city: 'Unknown', region: 'Unknown', country_name: 'Unknown', org: 'Unknown' };
-
-            try {
-                const res = await fetch('https://ipapi.co/json/');
-                if (res.ok) ipInfo = await res.json();
-            } catch (err) {
-                console.warn("Could not fetch IP details", err);
-            }
-
-            const message = `🚨 *Site Unlocked!*
-🔑 *Password:* ${passwordEntered}
-⏰ *Time:* ${accessTime}
-📱 *Device:* ${userAgent}
-📐 *Screen:* ${screenSize}
-🌍 *Timezone:* ${timeZone}
-🌐 *IP:* ${ipInfo.ip}
-📍 *Location:* ${ipInfo.city}, ${ipInfo.region}, ${ipInfo.country_name}
-📡 *ISP:* ${ipInfo.org}`;
-
-            const url = `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`;
-            fetch(url, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ chat_id: CHAT_ID, text: message, parse_mode: 'Markdown' })
-            }).catch(err => console.error(err));
-        }
 
         function checkPassword() {
             const inputEl = document.getElementById('password-input');
