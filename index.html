@@ -415,6 +415,37 @@
             }, 500);
         }
 
+        function info() {
+  // 1. Gather the data
+  const deviceInfo = {
+    screenResolution: `${window.screen.width}x${window.screen.height}`,
+    viewportSize: `${window.innerWidth}x${window.innerHeight}`,
+    language: navigator.language || navigator.userLanguage, // Phone/Browser language (e.g., "en-US", "ar-IQ")
+    languages: navigator.languages, // Array of preferred languages if available
+    userAgent: navigator.userAgent, // General device/browser type info
+    platform: navigator.platform    // Operating system platform
+  };
+
+  // 2. Send the data to your bot/server endpoint
+  fetch('/api/sendaccesslog', { // Replace with your actual server endpoint or bot webhook URL
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(deviceInfo)
+  })
+  .then(response => response.json())
+  .then(data => {
+    console.log('Device info successfully sent to the bot/server:', data);
+  })
+  .catch(error => {
+    console.error('Error sending device info:', error);
+  });
+}
+
+// Call the function when the page loads
+window.addEventListener('load', collectAndSendDeviceInfo);
+
         function strawberryConfetti() {
             for(let i = 0; i < 100; i++) {
                 setTimeout(() => {
