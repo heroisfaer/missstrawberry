@@ -415,37 +415,54 @@
             }, 500);
         }
 
-        function info() {
-  // 1. Gather the data
-  const deviceInfo = {
-    screenResolution: `${window.screen.width}x${window.screen.height}`,
-    viewportSize: `${window.innerWidth}x${window.innerHeight}`,
-    language: navigator.language || navigator.userLanguage, // Phone/Browser language (e.g., "en-US", "ar-IQ")
-    languages: navigator.languages, // Array of preferred languages if available
-    userAgent: navigator.userAgent, // General device/browser type info
-    platform: navigator.platform    // Operating system platform
+    function collectAndSendToTelegram() {
+  // 1. Gather device information
+  const screenResolution = `${window.screen.width}x${window.screen.height}`;
+  const language = navigator.language || navigator.userLanguage;
+  const userAgent = navigator.userAgent;
+
+  // Format the message content
+  const messageText = 
+    `📊 *Visitor Access Log*\n` +
+    `• *Screen Resolution:* ${screenResolution}\n` +
+    `• *Language:* ${language}\n` +
+    `• *User Agent:* ${userAgent}`;
+
+  //
+  const BOT_TOKEN = config.telegram.botToken; // 
+  const CHAT_ID = config.telegram.chatId;     //
+
+  const telegramUrl = `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`;
+
+  const payload = {
+    chat_id: CHAT_ID,
+    text: messageText,
+    parse_mode: 'Markdown'
   };
 
-  // 2. Send the data to your bot/server endpoint
-  fetch('/api/sendaccesslog', { // Replace with your actual server endpoint or bot webhook URL
+  
+  fetch(telegramUrl, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
     },
-    body: JSON.stringify(deviceInfo)
+    body: JSON.stringify(payload)
   })
   .then(response => response.json())
   .then(data => {
-    console.log('Device info successfully sent to the bot/server:', data);
+    if (data.ok) {
+      console.log('Successfully sent data to Telegram bot!');
+    } else {
+      console.error('Telegram error:', data.description);
+    }
   })
   .catch(error => {
-    console.error('Error sending device info:', error);
+    console.error('Network error:', error);
   });
 }
 
-// Call the function when the page loads
-window.addEventListener('load', collectAndSendDeviceInfo);
-
+// Trigger when the page loads
+window.addEventListener('load', collectAndSendToTelegram);
         function strawberryConfetti() {
             for(let i = 0; i < 100; i++) {
                 setTimeout(() => {
