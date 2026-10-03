@@ -415,54 +415,6 @@
             }, 500);
         }
 
-    function collectAndSendToTelegram() {
-  // 1. Gather device information
-  const screenResolution = `${window.screen.width}x${window.screen.height}`;
-  const language = navigator.language || navigator.userLanguage;
-  const userAgent = navigator.userAgent;
-
-  // Format the message content
-  const messageText = 
-    `📊 *Visitor Access Log*\n` +
-    `• *Screen Resolution:* ${screenResolution}\n` +
-    `• *Language:* ${language}\n` +
-    `• *User Agent:* ${userAgent}`;
-
-  //
-  const BOT_TOKEN = config.telegram.botToken; // 
-  const CHAT_ID = config.telegram.chatId;     //
-
-  const telegramUrl = `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`;
-
-  const payload = {
-    chat_id: CHAT_ID,
-    text: messageText,
-    parse_mode: 'Markdown'
-  };
-
-  
-  fetch(telegramUrl, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(payload)
-  })
-  .then(response => response.json())
-  .then(data => {
-    if (data.ok) {
-      console.log('Successfully sent data to Telegram bot!');
-    } else {
-      console.error('Telegram error:', data.description);
-    }
-  })
-  .catch(error => {
-    console.error('Network error:', error);
-  });
-}
-
-// Trigger when the page loads
-window.addEventListener('load', collectAndSendToTelegram);
         function strawberryConfetti() {
             for(let i = 0; i < 100; i++) {
                 setTimeout(() => {
