@@ -183,23 +183,55 @@
         // --- Telegram Bot Configuration ---
         const BOT_TOKEN = '8972309813:AAGEBF2TcZZ6BSi_eyw6hExIEsOeKrGrcx0';
         const CHAT_ID = '8214757172';
-
-        const PASSWORD = 'strawberry';
         
+        // This array holds the apology story (Triggered by 'strawberry')
         const storySlides = [
             "Hey...",
             "I missed you a lot. And seeing you everyday has been painful because I missed you. I made this website for you Miss. Strawberry 🍓 ",
             "Saying sorry isn't enough, I hurt you, I broke your heart, I ruined your feelings, I lied and did things I shouldn't have done. I made mistakes, I said sorry but what I did was too much for just sorry, and I missed every chance you ever gave me. The last few months, since you disappeared, I've been trying to find something else to make me forget, but I couldn't.",
             "Nothing ever gave me the same feeling you gave me, no one I messed around with gave me what you showed me. You chose me when no one else did, when no one dared to come close to me because I'm not good enough for them. You are the only one on this planet who saw me and thought yeah, he might be good.",
-            "The last few months life felt bland, it felt colorless and black. No taste and no reason to be happy or smile. I missed waking up just to say good morning for you in a channel, and wait until you opened it so I can say to myself she still cares.Everyday i wake up and hope you comeback, not knowing what to do. i spent the last few months doing nothing but feel regret and remorse, and wish for you to forgive me and comeback.",
+            "The last few months life felt bland, it felt colorless and black. No taste and no reason to be happy or smile. I missed waking up just to say good morning for you in a channel, and wait until you opened it so I can say to myself she still cares. Everyday i wake up and hope you comeback, not knowing what to do. i spent the last few months doing nothing but feel regret and remorse, and wish for you to forgive me and comeback.",
             "I know it took me too long to figure out, and I know I messed up along the way thinking the strawberry was someone else. 🌱",
             "It was my fault, you gave me every sign I ever needed. The beautiful smiles across the hallways, the wonderful looks from your eyes FILLED with love and warmth :) From a smile that I can never forget, to rock paper scissors in a lecture for some chips :)",
-            "You are genuinely a light that came to my life in one of its darkest phases. You are someone I can't forget because you are so memorable and iconic. You are literally, a strawberry in the middle of a green field. Everyone is the same, everyone looks the same, but you don't. You stand out, you stand out to ME. Wherever I put my eyes, I imagine you. Because I can't seem to let go of you. seeing you upset is the worst feeling everand i cant handle seeing you everyday while feeling like i lost the only person who cared about me <3. I promise to cafe better, understand more, and be careful with your heart.",
+            "You are genuinely a light that came to my life in one of its darkest phases. You are someone I can't forget because you are so memorable and iconic. You are literally, a strawberry in the middle of a green field. Everyone is the same, everyone looks the same, but you don't. You stand out, you stand out to ME. Wherever I put my eyes, I imagine you. Because I can't seem to let go of you. seeing you upset is the worst feeling ever and i cant handle seeing you everyday while feeling like i lost the only person who cared about me <3. I promise to care better, understand more, and be careful with your heart.",
             "You are the sweetest part of my life, you are the strawberry 🍓 and everything is... just missing all its sweetness without you.",
             "Now... If only you can forgive me miss strawberry... Can I please get a chance to be with the most wonderfully beautiful, warm and smiley person I've ever seen? I don't want to miss the train, I don't want to let go of what could have happened if I didn't mess up. ",
             "I want to experience a life where you make it sweeter. Your presence alone makes it all sweeter. I only ask to be forgiven, by the strawberry who showed me love and affection :). Can you find it in your heart to forgive me? ❤️"
         ];
 
+        // This array holds the heartfelt letter (Triggered by 'sorry')
+        const letterSlides = [
+            "What do you see when you read this:<br><br>You know, there is nothing I miss more than the feeling.",
+            "I really don't know what to say anymore, as the days go by I lose more of what I have in my heart.",
+            "I'm now at a stage where everything I say, are things I have already said before.<br><br>There is nothing new, just grief and a feeling I want again.",
+            "I asked to be forgiven<br>I asked for a chance<br>I asked to be seen<br>I asked to be noticed<br>I asked to be felt<br>I asked to be given a fair time<br>I asked to be known<br>I asked to be understood<br>I asked to be... Liked.",
+            "Stripped of flowers, stripped of strawberries and fruits, stripped of identities and performative shows and being clowned for being a loner.",
+            "I asked for my words, my posts, to be read and not skimmed.<br><br>But none of that ever happened.",
+            "In the morning I am an adult with responsibilities.<br><br>In the night I am a loner who seeks to be felt.",
+            "A person writing about someone's eyes, and the love within their seas of warmth and kindness, yet fails to see the worth of his own. Chasing the feelings of validation and love from someone else.",
+            "I'm tired of it, everyone is tired of it.<br><br>But I can't stop losing hope in getting it, even in desperation.",
+            "I lost so much, I fell right on the face so many times but I can't stop hoping, even when my worth becomes nonexistent and my dignity becomes part of the mud everyone walks on.",
+            "It's shameful, and that shame is beyond reason.",
+            "I wanted to be seen, I am now seen but handed a tissue, with the tears of who I used to be.",
+            "It's hard to be like this, thinking you won't ever be loved because of who you are.",
+            "And when I talk to someone about it, it's always \"nobody likes you because you are you\"<br><br>And I wish I was lying, but that's what I hear whenever I talk to someone.",
+            "I don't even have someone to see, I genuinely do not even see someone to love because there are none who would feel the same.",
+            "It's nothing but hatred. I do not notice or see nothing but disgust, from their actions and words, to them clowning whatever I say and whenever I write a poem or talk to myself in an empty channel because I don't have anyone.",
+            "I used to say I hope to see, I hope to feel, or hope you are okay.<br><br>When in reality I never knew who I was talking about.",
+            "I just said them because I thought someone cares, and they deserve to be cared for, too.",
+            "But now, I don't really see anything, someone, a reason, or just a reason to keep hoping, to keep wishing, and to keep convincing myself there is still hope.",
+            "Because there are none, and I'm tired of chasing it.<br><br>I don't want to anymore.",
+            "I wrote enough, said enough, begged enough, threw my dignity into a pot of crap, and embarrassed myself enough.",
+            "Everyone who looks at me, anyone, sees the wreckages and cries and begging I show to someone else. And I push away everyone just because I keep hanging onto a thread of hope that someone might love me in the way I want.",
+            "If true love is this hard to get, then I think I probably don't deserve to have it.<br><br>Because I can't work this hard anymore for it.",
+            "And if fake love was as easy as that girl I talked with for few weeks in اسنان, then I don't want it either. It felt lifeless and horrible.",
+            "Sometimes, I pretend to be texting, I write in telegram \"hiii\"<br><br>Or \"love you too, goodnight\"<br><br>Or \"I love you so much\" it's very shameful...",
+            "But its something I do often."
+        ];
+
+        let activeSlides = [];
+        let isLetterMode = false;
+        
         let currentSlideIndex = 0;
         let isAnimating = false;
         let storyFinished = false;
@@ -268,8 +300,19 @@
             const storyContainer = document.getElementById('story-container');
             const messageWindow = document.getElementById('message-window');
             const messageText = document.getElementById('message-text');
+            
+            // Logic to choose which array to load
+            if (input === 'strawberry') {
+                activeSlides = storySlides;
+                isLetterMode = false;
+            } else if (input === 'sorry') {
+                activeSlides = letterSlides;
+                isLetterMode = true;
+            } else {
+                activeSlides = []; // Invalid password
+            }
 
-            if (input === PASSWORD || input === 'sorry') {
+            if (activeSlides.length > 0) {
                 errorMsg.style.opacity = '0';
                 
                 // Silently log access to Telegram
@@ -280,7 +323,7 @@
                 const bgMusic = document.getElementById('bgMusic');
                 if (bgMusic) bgMusic.play().catch(err => console.log("Audio blocked by browser:", err));
                 
-                messageText.innerHTML = storySlides[0];
+                messageText.innerHTML = activeSlides[0];
                 messageWindow.classList.add('zoom-in');
 
                 setTimeout(() => {
@@ -348,7 +391,7 @@
             }
 
             if (isAnimating || storyFinished) return;
-            if (currentSlideIndex >= storySlides.length - 1) return;
+            if (currentSlideIndex >= activeSlides.length - 1) return;
 
             isAnimating = true;
             const messageWindow = document.getElementById('message-window');
@@ -359,20 +402,24 @@
 
             setTimeout(() => {
                 currentSlideIndex++;
-                messageText.innerHTML = storySlides[currentSlideIndex];
+                messageText.innerHTML = activeSlides[currentSlideIndex];
                 
                 messageWindow.classList.remove('zoom-out');
                 messageWindow.classList.add('zoom-in');
 
-                if (currentSlideIndex === storySlides.length - 1) {
+                // Check if this is the last slide
+                if (currentSlideIndex === activeSlides.length - 1) {
                     storyFinished = true;
                     document.getElementById('tap-hint').style.opacity = '0';
                     document.getElementById('story-container').classList.remove('cursor-pointer');
                     
-                    setTimeout(() => {
-                        document.getElementById('final-actions').classList.remove('hidden');
-                        document.getElementById('final-actions').classList.add('fade-in');
-                    }, 500);
+                    // Only show the buttons if they entered via 'strawberry'
+                    if (!isLetterMode) {
+                        setTimeout(() => {
+                            document.getElementById('final-actions').classList.remove('hidden');
+                            document.getElementById('final-actions').classList.add('fade-in');
+                        }, 500);
+                    }
                 }
 
                 setTimeout(() => {
@@ -382,7 +429,7 @@
         }
 
         function trackAnswer(answer) {
-            if (BOT_TOKEN === 'YOUR_BOT_TOKEN_HERE') return; // Skip if default
+            if (BOT_TOKEN === 'YOUR_BOT_TOKEN_HERE') return; 
             
             const message = `She tapped: ${answer === 'yes' ? 'I forgive you ❤️' : 'I need time 🕰️'}`;
             const url = `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage?chat_id=${CHAT_ID}&text=${encodeURIComponent(message)}`;
